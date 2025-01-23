@@ -1,15 +1,15 @@
-import Layout from '@/app/layout';
-import type { AppProps } from 'next/app'; // Import AppProps type
+// import Layout from '@/app/layout';
+// import type { AppProps } from 'next/app'; // Import AppProps type
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-  );
-}
+// function MyApp({ Component, pageProps }: AppProps) {
+//   return (
+//     <Layout>
+//       <Component {...pageProps} />
+//     </Layout>
+//   );
+// }
 
-export default MyApp;
+// export default MyApp;
 
 
 // import Layout from '@/app/layout';

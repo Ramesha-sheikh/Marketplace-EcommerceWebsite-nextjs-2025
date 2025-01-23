@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Navbar from '../Components/Navbar';
 import { Poppins } from "next/font/google";
-import ScrollToTopButton from "../Components/scrollbtn"
+// import ScrollToTopButton from "../Components/scrollbtn"
 
 
 const pop = Poppins({ subsets: ['latin'],
@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={pop.className}>
       <Navbar />
       {children}
-      <ScrollToTopButton />
+      {/* <ScrollToTopButton /> */}
       <Footer />
       </body>
     </html>
