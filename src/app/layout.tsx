@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navbar from '../Components/Navbar';
+import Navbar from '../Components/Navbar/Navbar';
 import { Poppins } from "next/font/google";
 
 

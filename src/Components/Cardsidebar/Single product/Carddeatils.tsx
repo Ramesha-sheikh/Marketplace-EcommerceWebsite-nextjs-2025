@@ -5,8 +5,8 @@ import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { FaEye } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
-import Link from "next/link";
 import { useCart, type CartItem } from "@/app/api/add to card/useCart";
+import RelatedProduct from "@/Components/shoppage/Related product";
 
 interface Product {
   id: string;
@@ -38,33 +38,18 @@ async function getData(): Promise<Product[]> {
       }
     `);
 
-    return fetchData.map((prod: {
-      _id: string;
-      title: string;
-      price: number | string;
-      rating: number;
-      reviewCount: number;
-      description: string;
-      imageThumbnails: string[];
-      mainImage: string;
-      category: string;
-      subCategory: string;
-    }) => {
-      const parsedPrice = typeof prod.price === "number" ? prod.price : parseFloat(prod.price) || 0;
-
-      return {
-        id: prod._id,
-        title: prod.title || "Untitled",
-        price: isNaN(parsedPrice) ? 0 : parsedPrice,
-        rating: prod.rating || 0,
-        reviewCount: prod.reviewCount || 0,
-        description: prod.description || "No description available",
-        mainImage: prod.mainImage || "/placeholder.svg",
-        imageThumbnails: prod.imageThumbnails || [],
-        category: prod.category || "",
-        subCategory: prod.subCategory || "",
-      };
-    });
+    return fetchData.map((prod: any) => ({
+      id: prod._id,
+      title: prod.title || "Untitled",
+      price: typeof prod.price === "number" ? prod.price : parseFloat(prod.price) || 0,
+      rating: prod.rating || 0,
+      reviewCount: prod.reviewCount || 0,
+      description: prod.description || "No description available",
+      mainImage: prod.mainImage || "/placeholder.svg",
+      imageThumbnails: prod.imageThumbnails || [],
+      category: prod.category || "",
+      subCategory: prod.subCategory || "",
+    }));
   } catch (err) {
     console.error("Error fetching data:", err);
     return [];
@@ -75,20 +60,23 @@ const ProductPage = () => {
   const params = useParams();
   const productId = params?.id as string;
 
+  if (!productId) {
+    notFound();
+    return <div>Product not found.</div>;
+  }
+
+  const [productItems, setProductItems] = useState<Product[]>([]);
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [currentImage, setCurrentImage] = useState<string>("");
+  const [currentImage, setCurrentImage] = useState("");
   const { addToCart } = useCart();
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   useEffect(() => {
-    if (!productId) {
-      notFound();
-      return;
-    }
-
     const fetchData = async () => {
       const products = await getData();
+      setProductItems(products);
+
       const foundProduct = products.find((prod) => prod.id === productId);
 
       if (foundProduct) {
@@ -122,10 +110,7 @@ const ProductPage = () => {
       addToCart(cartItem);
 
       setSuccessMessage("Product successfully added to cart!");
-
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
+      setTimeout(() => setSuccessMessage(""), 3000);
     }
   };
 
@@ -200,28 +185,7 @@ const ProductPage = () => {
             )}
           </div>
         </div>
-
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Related Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((related) => (
-              <div key={related.id} className="bg-white shadow rounded-lg p-4">
-                <Image
-                  src={related.mainImage || "/placeholder.svg"}
-                  alt={related.title}
-                  width={200}
-                  height={200}
-                  className="rounded-lg mb-4 object-cover w-full h-auto"
-                />
-                <h3 className="text-lg font-bold text-gray-800">{related.title}</h3>
-                <p className="text-gray-500">Rs. {related.price.toLocaleString()}</p>
-                <Link href={`/product/${related.id}`}>
-                  <button className="mt-4 bg-black text-white py-2 px-4 rounded-full">View Details</button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
+        <RelatedProduct relatedProducts={relatedProducts} />
       </div>
     </div>
   );
