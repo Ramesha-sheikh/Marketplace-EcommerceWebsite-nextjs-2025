@@ -39,15 +39,27 @@ async function getData(): Promise<Product[]> {
       }
     `);
 
-    return fetchData.map((prod: any) => ({
+    // Fixing the type of the 'prod' object explicitly
+    return fetchData.map((prod: {
+      _id: string;
+      title: string;
+      price: number | string;
+      rating: number;
+      reviewCount: number;
+      description: string;
+      imageThumbnails: { asset: { url: string } }[];
+      mainImage: { asset: { url: string } };
+      category: string;
+      subCategory: string;
+    }) => ({
       id: prod._id,
       title: prod.title || "Untitled",
-      price: typeof prod.price === "number" ? prod.price : parseFloat(prod.price) || 0,
+      price: typeof prod.price === "number" ? prod.price : parseFloat(prod.price as string) || 0,
       rating: prod.rating || 0,
       reviewCount: prod.reviewCount || 0,
       description: prod.description || "No description available",
-      mainImage: prod.mainImage || "/placeholder.svg",
-      imageThumbnails: prod.imageThumbnails || [],
+      mainImage: prod.mainImage ? prod.mainImage.asset.url : "/placeholder.svg",
+      imageThumbnails: prod.imageThumbnails.map((thumbnail) => thumbnail.asset.url) || [],
       category: prod.category || "",
       subCategory: prod.subCategory || "",
     }));
@@ -176,6 +188,7 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
 
 
 // "use client";
