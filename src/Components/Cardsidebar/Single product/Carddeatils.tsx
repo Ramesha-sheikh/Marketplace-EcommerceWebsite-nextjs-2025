@@ -7,6 +7,8 @@ import { FaEye } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
 import { useCart, type CartItem } from "@/app/api/add to card/useCart";
 import RelatedProduct from "@/Components/shoppage/Related product";
+import { toast } from "react-toastify";
+import { BiShareAlt } from "react-icons/bi";
 
 interface Product {
   id: string;
@@ -112,6 +114,30 @@ const ProductPage = () => {
     }
   };
 
+  const handleShare = () => {
+    if (!product) {
+      toast.error("Product is not available.");
+      return;
+    }
+
+    if (navigator.share) {
+      navigator.share({
+        title: product.title,
+        text: product.description,
+        url: window.location.href,
+      })
+        .then(() => {
+          toast.success("Product shared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error sharing the product: ", error);
+          toast.error("Error sharing the product.");
+        });
+    } else {
+      toast.error("Sharing is not supported on your device.");
+    }
+  };
+
   if (!productId || !product) return <div>Loading...</div>;
 
   return (
@@ -174,6 +200,9 @@ const ProductPage = () => {
               <button className="py-2 px-3 text-xl font-bold">
                 <FaEye />
               </button>
+              <button className="py-2 px-3 text-xl font-bold" onClick={handleShare}>
+                <BiShareAlt />
+              </button>
             </div>
 
             {successMessage && (
@@ -190,6 +219,7 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
 
 // "use client";
 // import { useEffect, useState } from "react";
