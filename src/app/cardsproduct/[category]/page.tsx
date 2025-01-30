@@ -1,7 +1,3 @@
-
-
-
-
 "use client";
 
 import { useParams } from "next/navigation";
@@ -22,10 +18,9 @@ type Product = {
 };
 
 const CategoryPage = () => {
-  const [products, setProducts] = useState<Product[]>([]); // Use the Product type here
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Get category from URL params
   const params = useParams();
   const category = params.category as string;
 
@@ -37,8 +32,6 @@ const CategoryPage = () => {
       }
 
       console.log("Category from URL:", category);
-
-      // Convert URL parameter to match Sanity schema format
       const formattedCategory = category.replace(/-/g, "_").toLowerCase();
       console.log("Formatted category:", formattedCategory);
 
@@ -58,12 +51,8 @@ const CategoryPage = () => {
             tags
           }
         `;
-        console.log("Sanity query:", query);
 
         const res = await client.fetch(query, { formattedCategory });
-
-        console.log("Fetched Products:", res);
-
         setProducts(res);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -85,34 +74,40 @@ const CategoryPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Products in {category.replace(/-/g, " ").replace(/(^\w|\s\w)/g, m => m.toUpperCase())}
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<h1
+  className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-extrabold mb-6 text-center uppercase text-black bg-clip-text tracking-wide animate-pulse"
+  style={{ fontFamily: "'Poppins', sans-serif" }}
+>
+  PRODUCTS IN {category.replace(/-/g, " ").toUpperCase()}
+</h1>
+
+
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {products.map((product) => (
           <div
             key={product._id}
-            className="border border-gray-200 rounded-lg p-4 flex flex-col items-center shadow-md hover:shadow-lg transition-shadow duration-300"
+            className="border border-gray-200 rounded-lg flex flex-col items-center shadow-md hover:shadow-xl transition-all duration-300 bg-white w-full pt-2 pl-2 py-2 pr-2"
           >
-            <Link href={`/cardproduct/${product._id}`}>
+            <Link href={`/cardproduct/${product._id}`}> 
               <Image
                 src={product.mainImage || "/placeholder.svg"}
                 alt={product.title}
-                width={300}
-                height={300}
-                className="object-cover rounded-lg mb-4 w-full h-64"
+                width={500}
+                height={250}
+                className="object-cover rounded-lg mb-3 w-full h-48"
               />
             </Link>
-            <h3 className="text-lg font-semibold text-center mb-2">{product.title}</h3>
-            <p className="text-gray-600 font-bold mb-2">Price: {product.price}</p>
+            <h3 className="text-lg font-semibold text-center mb-1 text-gray-800">{product.title}</h3>
+            <p className="text-gray-700 font-bold mb-1 text-base">Price: {product.price}</p>
             <p className="text-sm text-gray-500">Category: {product.category}</p>
             <p className="text-sm text-gray-500">Subcategory: {product.subCategory}</p>
             {product.tags && product.tags.length > 0 && (
-              <div className="mt-2">
+              <div className="mt-2 w-full text-center">
                 <p className="text-sm text-gray-500">Tags:</p>
-                <div className="flex flex-wrap gap-1 mt-1">
+                <div className="flex flex-wrap justify-center gap-1 mt-1">
                   {product.tags.map((tag: string, index: number) => (
-                    <span key={index} className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded">
+                    <span key={index} className="bg-gray-300 text-gray-800 text-xs px-2 py-1 rounded-md">
                       {tag}
                     </span>
                   ))}
@@ -127,3 +122,7 @@ const CategoryPage = () => {
 };
 
 export default CategoryPage;
+
+
+
+

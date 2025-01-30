@@ -11,123 +11,84 @@ const CartPage = () => {
   const { cart, removeFromCart, updateQuantity, getCartTotal } = useCart();
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Ensure the component is hydrated before rendering
   useEffect(() => {
     setIsHydrated(true);
   }, []);
 
-  if (!isHydrated) {
-    return null; // Prevent rendering until hydration is complete
-  }
+  if (!isHydrated) return null;
 
   return (
     <>
       <div className="relative">
         <Image
           src={"/Spic1.png"}
-          alt="pic1"
+          alt="Cart Background"
           width={1440}
           height={316}
           className="w-full min-h-[200px] lg:min-h-[350px] object-cover"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <Image
-            src={"/Spic2.png"}
-            alt="pic2"
-            width={77}
-            height={77}
-            className="w-[7%] md:w-[77px] md:h-[77px] "
-          />
-          <p className="font-[500] text-[24px] sm:text-[36px] md:text-[48px] lg:text-[56px] leading-[36px] sm:leading-[48px] md:leading-[72px] lg:leading-[80px] text-black">
-            Cart
-          </p>
-          <div className="text-[12px] sm:text-[16px] text-gray-600 flex items-center space-x-1">
+          <Image src={"/Spic2.png"} alt="Cart Icon" width={77} height={77} className="w-[50px] sm:w-[77px]" />
+          <p className="text-[24px] sm:text-[36px] md:text-[48px] font-bold">Cart</p>
+          <div className="text-gray-600 flex items-center text-sm sm:text-base">
             <p>Home</p>
-            <FaChevronRight className="text-gray-800" />
+            <FaChevronRight className="mx-1" />
             <p>Cart</p>
           </div>
         </div>
       </div>
-      <div className="max-w-[1440px] min-h-[525px] bg-white flex justify-center items-center px-4 py-6">
-        <div className="w-full md:w-[1240px] flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-8">
-          <div className="w-full md:w-[60%] rounded-md p-4">
-            <div className="w-full py-3 bg-[#FFF9E5] rounded-md px-4 sm:px-8 mt-11">
-              <ul className="flex flex-wrap sm:flex-nowrap justify-between">
-                <li className="text-[14px] sm:text-[16px] font-semibold">Product</li>
-                <li className="text-[14px] sm:text-[16px] font-semibold ">Price</li>
-                <li className="text-[14px] sm:text-[16px] font-semibold">Quantity</li>
-                <li className="text-[14px] sm:text-[16px] font-semibold">Subtotal</li>
+
+      <div className="max-w-[1440px] px-4 py-6 mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-[60%] bg-white rounded-lg p-4">
+            <div className="bg-[#FFF9E5] p-4 rounded-md">
+              <ul className="grid grid-cols-4 text-center font-semibold text-sm sm:text-base">
+                <li>Product</li>
+                <li>Price</li>
+                <li>Quantity</li>
+                <li>Subtotal</li>
               </ul>
             </div>
-
             {cart.length === 0 ? (
-              <p>Your cart is empty.</p>
+              <p className="text-center py-4">Your cart is empty.</p>
             ) : (
               cart.map((item) => (
-                <div key={item.id} className="flex flex-wrap md:flex-nowrap gap-4 sm:gap-6 mt-4 items-center bg-white">
-                  <div className="w-[106px] h-[106px] rounded-lg bg-[#FBEBB5] flex items-center justify-center">
-                    <Image
-                      src={item.image || "/placeholder.svg"}
-                      alt={item.title}
-                      width={100}
-                      height={100}
-                      className="object-contain"
-                    />
+                <div key={item.id} className="flex flex-row sm:flex-row items-center gap-4 p-4 border-b">
+                  <div className="w-[90px] h-[90px] bg-[#FBEBB5] rounded-md flex flex-row justify-center">
+                    <Image src={item.image || "/placeholder.svg"} alt={item.title} width={90} height={90} className="object-cover rounded-md" />
                   </div>
-
-                  <div className="flex flex-col md:flex-row md:justify-between gap-4 w-full items-start">
-                    <ul className="flex flex-col md:flex-row justify-between w-full gap-2">
-                      <li className="text-[12px] sm:text-[14px] md:text-[16px] text-[#9F9F9F]">{item.title}</li>
-                      <li className="text-[12px] sm:text-[14px] md:text-[16px] text-[#9F9F9F]">
-                        Rs. {item.price.toLocaleString()}
-                      </li>
-                      <li className="text-[12px] sm:text-[14px] md:text-[16px] text-[#9F9F9F]">
-                        <input
-                          type="number"
-                          value={item.quantity}
-                          onChange={(e) => updateQuantity(item.id, Number.parseInt(e.target.value))}
-                          min="1"
-                          className="w-16 p-1 border rounded"
-                        />
-                      </li>
-                      <li className="text-[12px] sm:text-[14px] md:text-[16px] text-[#9F9F9F]">
-                        Rs. {(item.price * item.quantity).toLocaleString()}
-                      </li>
-                    </ul>
-                    <div className="mt-2 sm:mt-0">
-                      <ImBin2
-                        className="text-[#FBEBB5] text-base sm:text-lg md:text-xl cursor-pointer"
-                        onClick={() => removeFromCart(item.id)}
-                      />
-                    </div>
+                  <div className="flex flex-row sm:flex-row justify-between w-full">
+                    <p className="text-sm sm:text-base">{item.title}</p>
+                    <p className="text-sm sm:text-base">Rs. {item.price.toLocaleString()}</p>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
+                      min="1"
+                      className="w-12 p-1 border rounded text-center"
+                    />
+                    <p className="text-sm sm:text-base">Rs. {(item.price * item.quantity).toLocaleString()}</p>
+                    <ImBin2 className="text-red-500 cursor-pointer text-lg" onClick={() => removeFromCart(item.id)} />
                   </div>
                 </div>
               ))
             )}
           </div>
 
-          <div className="w-full md:w-[35%] bg-[#FFF9E5] rounded-md p-4">
-            <h1 className="text-[20px] sm:text-[24px] md:text-[28px] text-black text-center">Cart Totals</h1>
-
-            <div className="flex flex-col gap-4 sm:gap-6 mt-4">
+          <div className="w-full lg:w-[35%] bg-[#FFF9E5] rounded-lg p-4">
+            <h2 className="text-center text-lg sm:text-xl font-bold">Cart Totals</h2>
+            <div className="mt-4 flex flex-col gap-4">
               <div className="flex justify-between">
-                <h2 className="text-[14px] sm:text-[16px]">Subtotal</h2>
-                <h2 className="text-[14px] sm:text-[16px] text-[#9F9F9F]">Rs. {getCartTotal().toLocaleString()}</h2>
+                <span>Subtotal</span>
+                <span className="text-gray-700">Rs. {getCartTotal().toLocaleString()}</span>
               </div>
-
               <div className="flex justify-between">
-                <h2 className="text-[14px] sm:text-[16px]">Total</h2>
-                <h2 className="text-[14px] sm:text-[16px] text-[#9F9F9F]">Rs. {getCartTotal().toLocaleString()}</h2>
+                <span>Total</span>
+                <span className="text-gray-700 font-semibold">Rs. {getCartTotal().toLocaleString()}</span>
               </div>
-
-              <div className="flex justify-center mt-4">
-                <Link
-                  href="/CheckOut"
-                  className="flex items-center justify-center text-center w-full sm:w-[200px] md:w-[250px] h-[40px] sm:h-[50px] md:h-[58px] rounded-lg text-sm text-black border-2 border-black hover:bg-black hover:text-white"
-                >
-                  Check Out
-                </Link>
-              </div>
+              <Link href="/CheckOut" className="bg-black text-white py-3 rounded-md text-center font-medium hover:bg-gray-800">
+                Proceed to Checkout
+              </Link>
             </div>
           </div>
         </div>
@@ -137,6 +98,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-
-
-

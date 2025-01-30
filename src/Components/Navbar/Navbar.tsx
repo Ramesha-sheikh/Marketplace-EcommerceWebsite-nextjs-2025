@@ -27,6 +27,7 @@ const Navbar = () => {
   const [searchResults, setSearchResults] = useState<Product[]>([])
   const [showResults, setShowResults] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
+  const [hasScrolled, setHasScrolled] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -49,6 +50,22 @@ const Navbar = () => {
     }
 
     fetchProducts()
+  }, [])
+
+  // Scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setHasScrolled(true)
+      } else {
+        setHasScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +96,12 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="relative z-50 max-w-[1440px] h-[100px] bg-[#FBEBB5] flex flex-row sm:flex-row justify-between items-center px-4 sm:px-8 py-4">
+      {/* Fixed Navbar with Conditional Shadow */}
+      <nav
+        className={`fixed top-0 left-0 w-full z-50 h-[80px] bg-[#FBEBB5] flex flex-row justify-between items-center px-4 sm:px-8 py-4 transition-shadow duration-300 ${
+          hasScrolled ? "shadow-md" : ""
+        }`}
+      >
         <button className="text-black text-xl sm:hidden mr-auto" onClick={() => setIsOpen(!isOpen)}>
           <TiThMenu />
         </button>
@@ -105,13 +127,17 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="flex justify-center items-center space-x-4 sm:space-x-6 text-[20px] sm:text-[24px] sm:mt-0">
+        <div className="flex justify-center items-center space-x-4 sm:space-x-6 text-[20px] sm:text-[24px]">
           <button onClick={() => setSearchOpen(!searchOpen)}>
             <FiSearch />
           </button>
+         
           <button>
-            <FaRegHeart />
-          </button>
+  <Link href="/wishlist">
+    <FaRegHeart />
+  </Link>
+</button>
+
           <button>
             <RiAccountCircleLine />
           </button>
@@ -125,7 +151,7 @@ const Navbar = () => {
 
       {/* Search Dropdown */}
       <div
-        className={`${searchOpen ? "translate-y-0" : "-translate-y-full"} transition-transform duration-500 ease-in-out fixed top-0 left-0 w-full bg-[#B88E2F] shadow-md z-50`}
+        className={`${searchOpen ? "translate-y-0" : "-translate-y-full"} overflow-hidden transition-transform duration-500 ease-in-out fixed top-0 left-0 w-full min-h-[700px] bg-[#faf4f4] shadow-md z-50`}
       >
         {/* Close Icon */}
         <button
@@ -134,7 +160,7 @@ const Navbar = () => {
             setSearchResults([])
             setSearchOpen(false)
           }}
-          className="absolute top-4 right-4 text-gray-600 text-2xl"
+          className="absolute top-4 right-4 text-gray-600 text-2xl "
         >
           <IoCloseOutline />
         </button>
@@ -146,7 +172,7 @@ const Navbar = () => {
             placeholder="Search products..."
             value={searchTerm}
             onChange={handleSearch}
-            className="flex-grow py-3 px-6 text-sm border border-gray-300 rounded-l-md focus:outline-none shadow-lg"
+            className="flex-grow  py-3 px-6 text-sm border  border-gray-300 rounded-l-md focus:outline-none shadow-lg"
           />
         </div>
 
@@ -170,21 +196,13 @@ const Navbar = () => {
           <div className="p-4 max-w-2xl mx-auto text-gray-500 text-center">No results found.</div>
         )}
       </div>
+
+      {/* Spacer to prevent content from hiding behind fixed navbar */}
+      <div className="h-[80px]"></div>
     </div>
   )
 }
 
 export default Navbar
-
-
-
-
-
-
-
-
-
-
-
 
 

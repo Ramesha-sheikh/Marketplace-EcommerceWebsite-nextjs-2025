@@ -1,3 +1,5 @@
+
+
 'use client'
 import type React from "react"
 import { useState, useEffect } from "react"
@@ -75,7 +77,7 @@ const FAQHelpCenter: React.FC = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-[#B88E2F] to-[#E1C16D] p-8 rounded-lg shadow-lg relative max-w-4xl mx-auto">
+    <div className="bg-white p-8 rounded-lg relative max-w-4xl ">
       <h2 className="text-3xl font-extrabold text-black mb-6">FAQ & Help Center</h2>
       <div className="mb-6">
         <div className="relative">
@@ -95,7 +97,7 @@ const FAQHelpCenter: React.FC = () => {
         {filteredFAQs
           .filter((faq) => faq.isTopQuestion)
           .map((faq) => (
-            <div key={faq._id} className="bg-white rounded-lg shadow-md border-b pb-4 transition-transform hover:scale-105 transform-gpu duration-300">
+            <div key={faq._id} className="bg-white rounded-lg border-b pb-4 ">
               <button
                 className="flex justify-between items-center w-full text-left font-semibold text-gray-800 py-3 px-4"
                 onClick={() => toggleTopFAQ(faq._id)}

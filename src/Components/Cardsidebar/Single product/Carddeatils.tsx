@@ -1,3 +1,6 @@
+
+
+
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
@@ -204,12 +207,13 @@ const ProductPage = () => {
                 <BiShareAlt />
               </button>
             </div>
-
             {successMessage && (
-              <div className="mt-4 text-green-500 font-semibold p-4 bg-green-100 rounded-lg shadow-lg">
-                {successMessage}
-              </div>
-            )}
+  <div className="fixed top-28 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl transition-opacity duration-500 animate-fadeIn">
+    {successMessage}
+  </div>
+)}
+
+
           </div>
         </div>
         <RelatedProduct relatedProducts={relatedProducts} />
