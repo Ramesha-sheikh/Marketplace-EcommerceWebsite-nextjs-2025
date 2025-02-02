@@ -118,7 +118,7 @@ const Navbar = () => {
             <Link href="/About" className="text-black text-[14px] sm:text-[16px] font-[500] leading-[24px]">
               About
             </Link>
-            <Link href="/contact" className="text-black text-[14px] sm:text-[16px] font-[500] leading-[24px]">
+            <Link href="/Contact" className="text-black text-[14px] sm:text-[16px] font-[500] leading-[24px]">
               Contact
             </Link>
             <Link href="/faq" className="text-black text-[14px] sm:text-[16px] font-[500] leading-[24px]">
