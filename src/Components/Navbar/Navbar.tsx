@@ -10,6 +10,7 @@ import { TiThMenu } from "react-icons/ti"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { client } from "../../sanity/lib/client"
+import { useWishlistStore } from "@/app/api/add to card/store/mywishlist/wishlist"
 
 interface Product {
   _id: string
@@ -28,6 +29,7 @@ const Navbar = () => {
   const [showResults, setShowResults] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
   const [hasScrolled, setHasScrolled] = useState(false)
+  const { wishlist } = useWishlistStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -108,6 +110,11 @@ const Navbar = () => {
         <div
           className={`${isOpen ? "block" : "hidden"} absolute sm:static top-20 right-0 w-full sm:w-auto bg-[#FBEBB5] sm:flex sm:flex-1 flex-col sm:flex-row items-center text-black text-[16px] font-[500] leading-[24px] z-50`}
         >
+          <div className="flex items-center justify-center">
+          <Link href="/">
+            <h1 className="font-bold text-3xl text-yellow-500">SitStyle</h1>
+          </Link>
+        </div>
           <div className="flex flex-col sm:flex-1 sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-8">
             <Link href="/" className="text-black text-[14px] sm:text-[16px] font-[500] leading-[24px]">
               Home
@@ -133,9 +140,17 @@ const Navbar = () => {
           </button>
          
           <button>
-  <Link href="/wishlist">
+          <Link href="/wishlist" className="relative w-8 h-8 flex items-center justify-center">
+            <FaRegHeart className="h-5 w-5" />
+            {wishlist.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {wishlist.length}
+              </span>
+            )}
+          </Link>
+  {/* <Link href="/wishlist">
     <FaRegHeart />
-  </Link>
+  </Link> */}
 </button>
 
           <button>

@@ -20,9 +20,11 @@ const Sectiontwo = () => {
               className="mr-28 cursor-pointer transition-transform hover:scale-105"
             />
             <div className="sm:mr-32 sm:-mt-20">
+            <Link href='/shopnow'>
               <p className="font-[500] text-[24px] md:text-[36px] leading-[36px] md:leading-[54px]">
                 Side Table
               </p>
+              </Link>
               <Link href='/shopnow'>
               <p className="underline underline-offset-8 mt-2 cursor-pointer font-[500] text-[16px] transition-transform hover:scale-105 hover:text-gray-700">
                 View More

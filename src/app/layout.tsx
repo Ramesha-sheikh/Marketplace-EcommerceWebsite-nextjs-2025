@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
 import Navbar from '../Components/Navbar/Navbar';
 import { Poppins } from "next/font/google";
+import ScrollToTopButton from "@/Components/button/Scrollbutton";
+import { StartTop } from "@/Components/starttotop/StartTop";
+
+
+
+
+
 
 
 
@@ -24,10 +31,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={pop.className}>
-      
+      <StartTop/>
       <Navbar />
       {children}
-   
+      <ScrollToTopButton/>
       <Footer />
       </body>
     </html>

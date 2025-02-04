@@ -1,18 +1,18 @@
 
-
-
-
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { FaEye } from "react-icons/fa6";
-import { CiHeart } from "react-icons/ci";
+import { CiHeart } from "react-icons/ci"; // Heart icon
 import { useCart, type CartItem } from "@/app/api/add to card/useCart";
 import RelatedProduct from "@/Components/shoppage/Related product";
 import { toast } from "react-toastify";
 import { BiShareAlt } from "react-icons/bi";
+
+// Import the wishlist store hook
+import { useWishlistStore } from "@/app/api/add to card/store/mywishlist/wishlist"; 
 
 interface Product {
   id: string;
@@ -69,7 +69,10 @@ const ProductPage = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [currentImage, setCurrentImage] = useState<string>("");
+
+  // Access the wishlist store
   const { addToCart } = useCart();
+  const { wishlist, toggleWishlist } = useWishlistStore(); // Use the toggleWishlist function
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   useEffect(() => {
@@ -144,6 +147,9 @@ const ProductPage = () => {
 
   if (!productId || !product) return <div>Loading...</div>;
 
+  // Check if the product is in the wishlist
+  const isInWishlist = wishlist.some((item) => item.id === product.id);
+
   return (
     <div className="bg-white-100 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,8 +204,16 @@ const ProductPage = () => {
               >
                 Add to Cart
               </button>
-              <button className="py-2 px-3 text-xl font-bold">
-                <CiHeart />
+              <button
+                className="py-2 px-3 text-xl font-bold"
+                onClick={() => toggleWishlist({ 
+                  id: product.id, 
+                  title: product.title, 
+                  image: product.mainImage, 
+                  discountedPrice: product.price 
+                })}
+              >
+                <CiHeart color={isInWishlist ? 'red' : 'gray'} />
               </button>
               <button className="py-2 px-3 text-xl font-bold">
                 <FaEye />
@@ -209,12 +223,10 @@ const ProductPage = () => {
               </button>
             </div>
             {successMessage && (
-  <div className="fixed top-28 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl transition-opacity duration-500 animate-fadeIn">
-    {successMessage}
-  </div>
-)}
-
-
+              <div className="fixed top-28 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl transition-opacity duration-500 animate-fadeIn">
+                {successMessage}
+              </div>
+            )}
           </div>
         </div>
         <RelatedProduct relatedProducts={relatedProducts} />
@@ -224,5 +236,6 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
 
 
