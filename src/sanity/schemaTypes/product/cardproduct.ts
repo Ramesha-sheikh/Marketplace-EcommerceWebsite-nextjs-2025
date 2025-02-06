@@ -1,5 +1,3 @@
-import { Rule } from '@sanity/types';  // Importing the correct type for Rule
-
 export const productDetails = {
   name: 'productDetails',
   type: 'document',
@@ -53,7 +51,7 @@ export const productDetails = {
       type: 'number',
       title: 'Product Rating',
       description: 'Rating of the product (out of 5)',
-      validation: (Rule: Rule) => Rule.min(0).max(5),
+      validation: (Rule) => Rule.min(0).max(5),
     },
     {
       name: 'reviewCount',
@@ -130,9 +128,7 @@ export const productDetails = {
       description: 'Subcategory of the product (e.g., Sofas, Coffee Tables)',
       options: {
         list: [
-          { title: 'study table', value: 'table and chair' },
-          { title: 'table and chair', value: 'table and chair' },
-          { title: 'Sofa', value: 'sofa' },
+          { title: 'Sofas', value: 'sofas' },
           { title: 'Chairs', value: 'chairs' },
           { title: 'Benches', value: 'benches' },
           { title: 'Lounge Chairs', value: 'lounge_chairs' },
@@ -189,9 +185,76 @@ export const productDetails = {
         },
       ],
     },
+    {
+      name: 'reviews',
+      title: 'Reviews',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'name',
+              title: 'Reviewer Name',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'rating',
+              title: 'Rating',
+              type: 'number',
+              validation: (Rule) => Rule.required().min(1).max(5),
+            },
+            {
+              name: 'comment',
+              title: 'Comment',
+              type: 'text',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'date',
+              title: 'Date',
+              type: 'datetime',
+              initialValue: new Date().toISOString(),
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'permissions',
+      title: 'Permissions',
+      type: 'array',
+      description: 'Who can access this product?',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'role',
+              type: 'string',
+              title: 'Role',
+              options: {
+                list: [
+                  { title: 'Admin', value: 'admin' },
+                  { title: 'Editor', value: 'editor' },
+                  { title: 'Viewer', value: 'viewer' },
+                ],
+              },
+            },
+            {
+              name: 'userId',
+              type: 'string',
+              title: 'User ID',
+              description: 'ID of a specific user (if applicable)',
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
-
 
 // export const productDetails = {
 //   name: 'productDetails',
@@ -246,7 +309,7 @@ export const productDetails = {
 //       type: 'number',
 //       title: 'Product Rating',
 //       description: 'Rating of the product (out of 5)',
-//       validation: (Rule:any) => Rule.min(0).max(5),
+//       validation: (Rule) => Rule.min(0).max(5),
 //     },
 //     {
 //       name: 'reviewCount',
@@ -323,10 +386,7 @@ export const productDetails = {
 //       description: 'Subcategory of the product (e.g., Sofas, Coffee Tables)',
 //       options: {
 //         list: [
-//           { title: 'study table', value: 'table and chair' },
-
-//           { title: 'table and chair', value: 'table and chair' },
-//           { title: 'Sofa', value: 'sofa' },
+//           { title: 'Sofas', value: 'sofas' },
 //           { title: 'Chairs', value: 'chairs' },
 //           { title: 'Benches', value: 'benches' },
 //           { title: 'Lounge Chairs', value: 'lounge_chairs' },
@@ -378,6 +438,44 @@ export const productDetails = {
 //               name: 'icon',
 //               type: 'image',
 //               title: 'Icon',
+//             },
+//           ],
+//         },
+//       ],
+//     },
+
+//     {
+//       name: "reviews",
+//       title: "Reviews",
+//       type: "array",
+//       of: [
+//         {
+//           type: "object",
+//           fields: [
+//             {
+//               name: "name",
+//               title: "Reviewer Name",
+//               type: "string",
+//               validation: (Rule) => Rule.required(),
+//             },
+//             {
+//               name: "rating",
+//               title: "Rating",
+//               type: "number",
+//               validation: (Rule) => Rule.required().min(1).max(5),
+//             },
+//             {
+//               name: "comment",
+//               title: "Comment",
+//               type: "text",
+//               validation: (Rule) => Rule.required(),
+//             },
+//             {
+//               name: "date",
+//               title: "Date",
+//               type: "datetime",
+//               initialValue: new Date().toISOString(),
+//               validation: (Rule) => Rule.required(),
 //             },
 //           ],
 //         },

@@ -30,7 +30,7 @@ const UCard: React.FC<UCardProps> = ({ title, heading }) => {
           </div>
         </div>
 
-        <div className="absolute top-44 flex-nowrap w-56 text-nowrap">
+        <div className="absolute top-44 flex-nowrap w-56 text-nowrap flex flex-row">
           <ul className="flex flex-col flex-nowrap sm:flex-row mr-11 items-center justify-center w-[100px] px-0 sm:w-auto sm:space-y-0 sm:ml-[50px] md:ml-[99px]">
             <li className="w-[48px] sm:w-[82px] h-[24px] mx-[5px] sm:mx-[10px] text-center flex items-center gap-3">
               Home

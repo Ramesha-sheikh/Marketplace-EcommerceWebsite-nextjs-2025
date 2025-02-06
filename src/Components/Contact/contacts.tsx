@@ -4,6 +4,7 @@ import { FaPhone } from "react-icons/fa6";
 import { MdAccessTimeFilled } from "react-icons/md";
 import  AboveFooter from '@/Components/AboveFooter'
 import Contacthero from '@/Components/Contact/Contacthero'
+import Map from '@/Components/Contact/map'
 const Contactform = () => {
   return (
     <>
@@ -108,6 +109,7 @@ const Contactform = () => {
   
      
     </div>
+    <Map/>
     <div className="w-full h-[300px] mt-[400px]  ">
    <AboveFooter  />
    </div>
