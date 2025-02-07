@@ -131,6 +131,17 @@ const CategoryPage = () => {
       >
         PRODUCTS IN {category.replace(/-/g, " ").toUpperCase()}
       </h1>
+      {loading && (
+  <div className="text-center text-blue-500 mt-4">
+    Loading... {progress}%
+  </div>
+)}
+{error && (
+  <div className="text-center text-red-500 mt-4">
+    ⚠️ {error}
+  </div>
+)}
+
 
       {/* Success Message */}
       {successMessage && (
