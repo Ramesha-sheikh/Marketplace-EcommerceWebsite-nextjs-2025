@@ -6,7 +6,6 @@ import { client } from "../../sanity/lib/client";
 import Filters from "@/Components/shoppage/filter";
 import Pagination from '@/Components/shoppage/pagination';
 import SearchBar from "@/Components/shoppage/searchbar";
-import { useWishlistStore } from "@/app/api/add to card/store/mywishlist/wishlist";
 import { CiHeart } from "react-icons/ci";
 
 // Define the Product interface
@@ -35,13 +34,14 @@ const Shoppage = () => {
   const [subCategories, setSubCategories] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [progress, setProgress] = useState<number>(100)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage] = useState<number>(8);
 
-  // Wishlist store
-  const { wishlist, toggleWishlist } = useWishlistStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,8 +132,54 @@ const Shoppage = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  const handleAddToWishlist = async (product: Product) => {
+      if (!product) return;
+  
+    try {
+      const response = await fetch("/api/wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer s0us43zv22",
+          // "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // ✅ Secure API key
+        },
+        body: JSON.stringify({
+          productId: product._id,
+          name: product.title, // ✅ Correct name field
+          price: product.price,
+          imageUrl: product.mainImage, // ✅ Correct image field
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to add item to wishlist");
+      }
+  
+      setSuccessMessage("Successfully added to wishlist!");
+      setTimeout(() => setSuccessMessage(""), 3000);
+      setProgress(100);
+      setLoading(true);
+  
+      setTimeout(() => {
+        const progressInterval = setInterval(() => {
+          setProgress((prev) => {
+            if (prev <= 0) {
+              clearInterval(progressInterval);
+              setSuccessMessage("");
+              setLoading(false);
+              return 0;
+            }
+            return prev - 5;
+          });
+        }, 50);
+      }, 300);
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+      setError("Failed to add item to wishlist. Please try again.");
+    }
+  };
+  
 
-  const isInWishlist = (id: string) => wishlist.some((item) => item.id === id);
 
   return (
     <div className="relative">
@@ -164,26 +210,18 @@ const Shoppage = () => {
             {currentItems.length > 0 ? (
               currentItems.map((product) => (
                 <div key={product._id} className="relative">
-                  <Link href={`/cardproduct/${product._id}`}>
                     <div className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300">
                       <div className="absolute bottom-2 right-2 z-10">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault(); // Prevents navigating on clicking the heart
-                            toggleWishlist({
-                              id: product._id,
-                              title: product.title,
-                              image: product.mainImage,
-                              discountedPrice: parseFloat(product.price),
-                            });
-                          }}
-                        >
-                          <CiHeart
-                            color={isInWishlist(product._id) ? "red" : "gray"}
-                            size={24}
-                          />
-                        </button>
+            <button
+              onClick={() => handleAddToWishlist(product)}
+              className="py-2 px-3 text-xl font-extrabold "
+              aria-label={`Add ${product.title} to wishlist`}
+            >
+              <CiHeart />
+            </button>
                       </div>
+                      <Link href={`/cardproduct/${product._id}`}>
+
                       <Image
                         src={product.mainImage || "/placeholder.svg"}
                         alt={`Image of ${product.title}`}
@@ -191,12 +229,13 @@ const Shoppage = () => {
                         height={300}
                         className="w-full h-48 object-cover"
                       />
+                       </Link>
                       <div className="p-4">
                         <h3 className="text-lg font-semibold text-gray-900">{product.title}</h3>
                         <p className="text-gray-600 mt-2">{product.price}</p>
                       </div>
                     </div>
-                  </Link>
+                 
                 </div>
               ))
             ) : (
@@ -214,3 +253,7 @@ const Shoppage = () => {
 };
 
 export default Shoppage;
+function setSuccessMessage(arg0: string) {
+  throw new Error("Function not implemented.");
+}
+
