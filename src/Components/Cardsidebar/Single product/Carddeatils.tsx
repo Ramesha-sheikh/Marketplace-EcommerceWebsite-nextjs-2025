@@ -165,6 +165,8 @@ const ProductPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // Use dynamic API key
+
         },
         body: JSON.stringify({
           productId: product.id,
