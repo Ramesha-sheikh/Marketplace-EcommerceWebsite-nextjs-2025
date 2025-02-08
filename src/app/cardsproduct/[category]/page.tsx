@@ -75,7 +75,7 @@ const CategoryPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer s0us43zv22", // Replace with actual API key
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // Use dynamic API key
         },
         body: JSON.stringify({
           productId: product._id,

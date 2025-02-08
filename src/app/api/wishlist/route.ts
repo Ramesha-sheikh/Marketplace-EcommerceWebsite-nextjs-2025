@@ -11,11 +11,13 @@ interface WishlistItem {
 let wishlist: WishlistItem[] = [];
 
 // Environment variable
-const API_SECRET_KEY = process.env.API_SECRET_KEY;
+const API_SECRET_KEY = process.env.NEXT_PUBLIC_API_SECRET_KEY;
 if (!API_SECRET_KEY) {
   console.error("🚨 API_SECRET_KEY is missing in environment variables.");
 }
 console.log("🔑 Loaded API_SECRET_KEY:", API_SECRET_KEY);
+// "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // Use dynamic API key
+
 
 // 🔹 Authorization check function
 function isAuthorized(request: Request) {

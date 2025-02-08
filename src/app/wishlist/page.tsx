@@ -26,7 +26,7 @@ export default function WishlistPage() {
     try {
       const response = await fetch("/api/wishlist", {
         headers: {
-          "Authorization": "Bearer s0us43zv22",
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // Use dynamic API key
         },
       })
       if (!response.ok) {
@@ -51,7 +51,7 @@ export default function WishlistPage() {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer s0us43zv22",
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // Use dynamic API key
         },
         body: JSON.stringify({ productId }),
       })
