@@ -1,4 +1,6 @@
 
+
+
 "use client";
 
 import { useParams } from "next/navigation";
@@ -211,6 +213,27 @@ const CategoryPage = () => {
 };
 
 export default CategoryPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // "use client";
 

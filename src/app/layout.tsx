@@ -8,7 +8,7 @@ import './globals.css'
 import Footer from '../Components/Footer';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Loading from './loading';
+import Loading from "./loading";
 
 
 
@@ -45,7 +45,7 @@ export default function RootLayout({
       <StartTop/>
       {(studioAndHome && !isLoading) &&  <Navbar />}
       
- 
+   {/* {children} */}
       {isLoading ? <Loading /> : children}
       <ScrollToTopButton/>
  
