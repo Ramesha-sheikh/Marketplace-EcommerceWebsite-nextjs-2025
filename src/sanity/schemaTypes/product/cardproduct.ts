@@ -222,37 +222,7 @@ export const productDetails = {
         },
       ],
     },
-    {
-      name: 'permissions',
-      title: 'Permissions',
-      type: 'array',
-      description: 'Who can access this product?',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {
-              name: 'role',
-              type: 'string',
-              title: 'Role',
-              options: {
-                list: [
-                  { title: 'Admin', value: 'admin' },
-                  { title: 'Editor', value: 'editor' },
-                  { title: 'Viewer', value: 'viewer' },
-                ],
-              },
-            },
-            {
-              name: 'userId',
-              type: 'string',
-              title: 'User ID',
-              description: 'ID of a specific user (if applicable)',
-            },
-          ],
-        },
-      ],
-    },
+   
   ],
 };
 
