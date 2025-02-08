@@ -142,8 +142,8 @@ const Shoppage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer s0us43zv22",
-          // "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // ✅ Secure API key
+          // "Authorization": "Bearer s0us43zv22",
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_SECRET_KEY}`, // ✅ Secure API key
         },
         body: JSON.stringify({
           productId: product._id,
