@@ -1,36 +1,45 @@
-
-"use client"
-import Navbar from '../Components/Navbar/Navbar';
+"use client";
+import Navbar from "../Components/Navbar/Navbar";
 import { Poppins } from "next/font/google";
 import ScrollToTopButton from "@/Components/button/Scrollbutton";
 import { StartTop } from "@/Components/starttotop/StartTop";
-import './globals.css'
-import Footer from '../Components/Footer';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import "./globals.css";
+import Footer from "../Components/Footer";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import Loading from "./loading";
 
+const pop = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
-
-const pop = Poppins({ subsets: ['latin'],
-  weight: ['400', '700'],
-});
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    // Check if the page has loaded before using sessionStorage
+    const hasLoadedBefore = sessionStorage.getItem("hasLoaded");
 
-    return () => clearTimeout(timer);
-  }, [pathname]); // Trigger effect on route change
+    if (!hasLoadedBefore) {
+      // If it's the first time loading the page, show the loader
+      setIsLoading(true);
+      sessionStorage.setItem("hasLoaded", "true"); // Set flag to prevent loader after first load
+      setTimeout(() => {
+        setIsLoading(false); // Hide the loader after 2 seconds
+      }, 2000);
+    } else {
+      // If the page has loaded before, hide the loader immediately
+      setIsLoading(false);
+    }
+  }, []); // This effect runs only once when the page loads for the first time
+
+  // Ensure loader hides on every route change after initial load
+  useEffect(() => {
+    if (sessionStorage.getItem("hasLoaded")) {
+      setIsLoading(false); // Hide the loader on route change
+    }
+  }, [pathname]); // This ensures loader hides after route changes
+
+  // Pathname checks to see where the user is
   const isStudio = pathname.startsWith("/studio");
   const isHome = pathname.startsWith("/sign-in");
   const isAdmin = pathname.startsWith("/admin");
@@ -38,22 +47,92 @@ export default function RootLayout({
   const isCustomers = pathname.startsWith("/customers");
   const isStatistics = pathname.startsWith("/product-data");
   const isReviews = pathname.startsWith("/reviews");
-  const studioAndHome = !isStudio && !isHome && !isAdmin && !isOrders && !isCustomers && !isStatistics && !isReviews
+
+  const studioAndHome =
+    !isStudio &&
+    !isHome &&
+    !isAdmin &&
+    !isOrders &&
+    !isCustomers &&
+    !isStatistics &&
+    !isReviews;
+
   return (
     <html lang="en">
       <body className={pop.className}>
-      <StartTop/>
-      {(studioAndHome && !isLoading) &&  <Navbar />}
-      
-   {/* {children} */}
-      {isLoading ? <Loading /> : children}
-      <ScrollToTopButton/>
- 
-      {(studioAndHome && !isLoading) && <Footer />}
+        <StartTop />
+        
+        {/* Show loader only the first time */}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {studioAndHome && <Navbar />}
+            {children}
+            <ScrollToTopButton />
+            {studioAndHome && <Footer />}
+          </>
+        )}
       </body>
     </html>
-  )
+  );
 }
+
+// "use client"
+// import Navbar from '../Components/Navbar/Navbar';
+// import { Poppins } from "next/font/google";
+// import ScrollToTopButton from "@/Components/button/Scrollbutton";
+// import { StartTop } from "@/Components/starttotop/StartTop";
+// import './globals.css'
+// import Footer from '../Components/Footer';
+// import { usePathname } from 'next/navigation';
+// import { useEffect, useState } from 'react';
+// import Loading from "./loading";
+
+
+
+// const pop = Poppins({ subsets: ['latin'],
+//   weight: ['400', '700'],
+// });
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode
+// }) {
+//   const pathname = usePathname();
+//   const [isLoading, setIsLoading] = useState(true);
+
+//   useEffect(() => {
+//     setIsLoading(true);
+//     const timer = setTimeout(() => {
+//       setIsLoading(false);
+//     }, 2000);
+
+//     return () => clearTimeout(timer);
+//   }, [pathname]); // Trigger effect on route change
+//   const isStudio = pathname.startsWith("/studio");
+//   const isHome = pathname.startsWith("/sign-in");
+//   const isAdmin = pathname.startsWith("/admin");
+//   const isOrders = pathname.startsWith("/orders");
+//   const isCustomers = pathname.startsWith("/customers");
+//   const isStatistics = pathname.startsWith("/product-data");
+//   const isReviews = pathname.startsWith("/reviews");
+//   const studioAndHome = !isStudio && !isHome && !isAdmin && !isOrders && !isCustomers && !isStatistics && !isReviews
+//   return (
+//     <html lang="en">
+//       <body className={pop.className}>
+//       <StartTop/>
+//       {(studioAndHome && !isLoading) &&  <Navbar />}
+      
+//    {/* {children} */}
+//       {isLoading ? <Loading /> : children}
+//       <ScrollToTopButton/>
+ 
+//       {(studioAndHome && !isLoading) && <Footer />}
+//       </body>
+//     </html>
+//   )
+// }
 
 
 
