@@ -104,7 +104,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   );
 }
 
-
 // "use client";
 // import Navbar from "../Components/Navbar/Navbar";
 // import { Poppins } from "next/font/google";
