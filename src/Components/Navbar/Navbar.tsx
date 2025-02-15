@@ -157,7 +157,7 @@ const Navbar = () => {
             <RiAccountCircleLine />
           </button>
           <button>
-            <Link href={`/Cart`}>
+            <Link href={`/Cardd`}>
               <IoCartOutline />
             </Link>
           </button>
