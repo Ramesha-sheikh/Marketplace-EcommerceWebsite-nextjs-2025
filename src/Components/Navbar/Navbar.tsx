@@ -140,14 +140,7 @@ const Navbar = () => {
           </button>
          
           <button>
-          {/* <Link href="/wishlist" className="relative w-8 h-8 flex items-center justify-center">
-            <FaRegHeart className="h-5 w-5" />
-            {wishlist.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {wishlist.length}
-              </span>
-            )}
-          </Link> */}
+          
   <Link href="/wishlist">
     <FaRegHeart />
   </Link>
